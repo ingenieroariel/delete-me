@@ -1,0 +1,88 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Weather map
+  description: A weather map that contains vector data from weather stations and pressure data for isobars.
+  termsOfService: http://nunez.co/terms/
+  contact:
+    name: Ariel Nuñez
+    email: ariel@nunez.co
+    url: http://nunez.co
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://weather.nunez.co
+paths:
+  /stations/stations.json:
+    get:
+      description: |
+        Returns all metar station information.
+      operationId: listStations
+      api: /pressure/openapi.yaml
+      responses:
+        '200':
+          description: station response
+          content:
+            application/geo+json-seq:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Station'
+        default:
+          description: unexpected error
+          content:
+            application/jso-seq:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /pressure/pressure.tiff:
+      get:
+        description: |
+           Pressure data derived from METAR.
+        api: /pressure/openapi.yaml
+        responses:
+           '200':
+              description: pressure response
+              content: image/tiff
+components:
+  schemas:
+    Station:
+      - required:
+        - id
+      - properties:
+          id:
+            type: string
+          site:
+            type: string
+          obsTime:
+            type: string
+          temp:
+            type: float
+          dewp:
+            type: float
+          wspd:
+            type: int
+          wdir:
+            type: int  
+          ceil:
+            type: int
+          visib:
+            type: float
+          fltcat:
+            type: string
+          altim:
+            type: float
+          rawOb:
+            type: string
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

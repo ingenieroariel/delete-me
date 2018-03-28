@@ -1,0 +1,83 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Metar station snapshot for 2018-02-19
+  description: Information for wind barbs, pressure contours or cloud cover.
+  termsOfService: http://nunez.co/terms/
+  contact:
+    name: Ariel Nuñez
+    email: ariel@nunez.co
+    url: http://nunez.co
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://weather.nunez.co/stations/
+paths:
+  /metar.json:
+    get:
+      description: |
+        Returns all metar station information.
+      operationId: listStations
+      responses:
+        '200':
+          description: station response
+          content:
+            application/geo+json-seq:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Station'
+        default:
+          description: unexpected error
+          content:
+            application/json-seq:
+              type: array
+              schema:
+                $ref: '#/components/schemas/Error'
+   /openapi.yaml:
+      get:
+        description: |
+           This document. Lists operations available on static assets.
+        content:
+           application/yaml
+components:
+  schemas:
+    Station:
+      - required:
+        - id
+      - properties:
+          id:
+            type: string
+          site:
+            type: string
+          obsTime:
+            type: string
+          temp:
+            type: float
+          dewp:
+            type: float
+          wspd:
+            type: int
+          wdir:
+            type: int  
+          ceil:
+            type: int
+          visib:
+            type: float
+          fltcat:
+            type: string
+          altim:
+            type: float
+          rawOb:
+            type: string
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

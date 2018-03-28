@@ -1,0 +1,17 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Weather map
+  description: A weather map that contains vector data from weather stations and raster data for isobars.
+  termsOfService: http://nunez.co/terms/
+  contact:
+    name: Ariel Nuñez
+    email: ariel@nunez.co
+    url: http://nunez.co
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://weather.nunez.co
+paths:
+
